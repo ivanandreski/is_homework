@@ -8,8 +8,12 @@ namespace homework.Domain.Models
     {
 
         public int Quantity { get; set; }
+        
+        public string TicketId { get; set; }
 
         public Ticket Ticket { get; set; }
+
+        public string ShoppingCartId { get; set; }
 
         public ShoppingCart ShoppingCart { get; set; }
     }

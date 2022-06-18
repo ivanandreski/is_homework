@@ -27,7 +27,7 @@ namespace homework.Repository.Implementation
         public User Get(string id)
         {
             return entities
-               .Include(z => z.)
+               .Include(z => z.Id)
                .Include("UserCart.ProductInShoppingCarts")
                .Include("UserCart.ProductInShoppingCarts.CurrnetProduct")
                .SingleOrDefault(s => s.Id == id);

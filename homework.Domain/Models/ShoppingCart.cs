@@ -15,6 +15,7 @@ namespace homework.Domain.Models
         public virtual List<OrderItem> OrderItems { get; set; }
 
         public bool Active { get; set; }
+        public string UserId { get; set; }
 
         public User User { get; set; }
     }

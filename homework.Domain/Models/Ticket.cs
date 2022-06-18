@@ -7,6 +7,8 @@ namespace homework.Domain.Models
 {
     public class Ticket : BaseEntity
     {
+        public string UserId { get; set; }
+        public string ScreaningId { get; set; }
 
         public User User { get; set; }
 

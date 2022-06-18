@@ -18,6 +18,8 @@ namespace homework.Domain.Models
         [Required]
         public double Price { get; set; }
 
+        public string MovieId { get; set; }
+
         public Movie Movie { get; set; }
 
         public virtual List<Ticket> Tickets { get; set; }
