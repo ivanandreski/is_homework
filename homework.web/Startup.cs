@@ -29,8 +29,8 @@ namespace homework.web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
-                //options.UseSqlServer(
-                //    Configuration.GetConnectionString("DefaultConnection")));
+            //options.UseSqlServer(
+            //    Configuration.GetConnectionString("DefaultConnection")));
                 options.UseSqlite(@"DataSource=mydatabase.db;"));
             services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
