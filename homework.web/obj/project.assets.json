@@ -2910,6 +2910,20 @@
         "runtime": {
           "bin/placeholder/homework.Repository.dll": {}
         }
+      },
+      "homework.Service/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v3.1",
+        "dependencies": {
+          "homework.Domain": "1.0.0",
+          "homework.Repository": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/homework.Service.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/homework.Service.dll": {}
+        }
       }
     }
   },
@@ -9216,6 +9230,11 @@
       "type": "project",
       "path": "../homework.Repository/homework.Repository.csproj",
       "msbuildProject": "../homework.Repository/homework.Repository.csproj"
+    },
+    "homework.Service/1.0.0": {
+      "type": "project",
+      "path": "../homework.Service/homework.Service.csproj",
+      "msbuildProject": "../homework.Service/homework.Service.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -9226,7 +9245,8 @@
       "Microsoft.EntityFrameworkCore.SqlServer >= 3.1.25",
       "Microsoft.EntityFrameworkCore.Tools >= 3.1.25",
       "Microsoft.VisualStudio.Web.CodeGeneration.Design >= 3.1.5",
-      "homework.Repository >= 1.0.0"
+      "homework.Repository >= 1.0.0",
+      "homework.Service >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -9235,11 +9255,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Git\\is_homework\\is_homework\\homework.web\\homework.web.csproj",
+      "projectUniqueName": "D:\\GitHub\\is_homework\\homework.web\\homework.web.csproj",
       "projectName": "homework.web",
-      "projectPath": "D:\\Git\\is_homework\\is_homework\\homework.web\\homework.web.csproj",
+      "projectPath": "D:\\GitHub\\is_homework\\homework.web\\homework.web.csproj",
       "packagesPath": "C:\\Users\\Ivan\\.nuget\\packages\\",
-      "outputPath": "D:\\Git\\is_homework\\is_homework\\homework.web\\obj\\",
+      "outputPath": "D:\\GitHub\\is_homework\\homework.web\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Ivan\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -9256,8 +9276,11 @@
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
           "projectReferences": {
-            "D:\\Git\\is_homework\\is_homework\\homework.Repository\\homework.Repository.csproj": {
-              "projectPath": "D:\\Git\\is_homework\\is_homework\\homework.Repository\\homework.Repository.csproj"
+            "D:\\GitHub\\is_homework\\homework.Repository\\homework.Repository.csproj": {
+              "projectPath": "D:\\GitHub\\is_homework\\homework.Repository\\homework.Repository.csproj"
+            },
+            "D:\\GitHub\\is_homework\\homework.Service\\homework.Service.csproj": {
+              "projectPath": "D:\\GitHub\\is_homework\\homework.Service\\homework.Service.csproj"
             }
           }
         }

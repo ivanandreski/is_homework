@@ -1,5 +1,8 @@
 using homework.Domain.Models;
 using homework.Repository;
+using homework.Repository.Implementation;
+using homework.Repository.Interface;
+using homework.Service.Interface;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -36,6 +39,12 @@ namespace homework.web
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
             services.AddRazorPages();
+
+            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+
+            services.AddTransient<IScreaningRepository, Repository.Implementation.ScreaningRepository>();
+
+            services.AddTransient<IScreaningService, Service.Implementation.ScreaningService>();
 
 
         }

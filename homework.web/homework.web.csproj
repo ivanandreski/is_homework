@@ -5,51 +5,9 @@
     <UserSecretsId>aspnet-homework.web-E0E6FDA3-38B2-485E-90A5-035A7B01ED6B</UserSecretsId>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Include="obj\Debug\netcoreapp3.1\.NETCoreApp,Version=v3.1.AssemblyAttributes.cs" />
-    <Compile Include="obj\Debug\netcoreapp3.1\homework.web.AssemblyInfo.cs" />
-    <Compile Include="obj\Debug\netcoreapp3.1\homework.web.MvcApplicationPartsAssemblyInfo.cs" />
-    <Compile Include="obj\Debug\netcoreapp3.1\homework.web.RazorAssemblyInfo.cs" />
-    <Compile Include="obj\Debug\netcoreapp3.1\homework.web.RazorTargetAssemblyInfo.cs" />
-    <Compile Include="obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\_ViewStart.cshtml.g.cs" />
-    <Compile Include="obj\Debug\netcoreapp3.1\Razor\Views\Home\Index.cshtml.g.cs" />
-    <Compile Include="obj\Debug\netcoreapp3.1\Razor\Views\Home\Privacy.cshtml.g.cs" />
-    <Compile Include="obj\Debug\netcoreapp3.1\Razor\Views\Movie\Create.cshtml.g.cs" />
-    <Compile Include="obj\Debug\netcoreapp3.1\Razor\Views\Movie\Delete.cshtml.g.cs" />
-    <Compile Include="obj\Debug\netcoreapp3.1\Razor\Views\Movie\Details.cshtml.g.cs" />
-    <Compile Include="obj\Debug\netcoreapp3.1\Razor\Views\Movie\Edit.cshtml.g.cs" />
-    <Compile Include="obj\Debug\netcoreapp3.1\Razor\Views\Movie\Index.cshtml.g.cs" />
-    <Compile Include="obj\Debug\netcoreapp3.1\Razor\Views\Shared\_Layout.cshtml.g.cs" />
-    <Compile Include="obj\Debug\netcoreapp3.1\Razor\Views\Shared\_LoginPartial.cshtml.g.cs" />
-    <Compile Include="obj\Debug\netcoreapp3.1\Razor\Views\Shared\_ValidationScriptsPartial.cshtml.g.cs" />
-    <Compile Include="obj\Debug\netcoreapp3.1\Razor\Views\_ViewImports.cshtml.g.cs" />
-    <Compile Include="obj\Debug\netcoreapp3.1\Razor\Views\_ViewStart.cshtml.g.cs" />
-    <Compile Include="obj\Debug\netcoreapp3.1\WebApplication1.AssemblyInfo.cs" />
-    <Compile Include="obj\Debug\netcoreapp3.1\WebApplication1.MvcApplicationPartsAssemblyInfo.cs" />
-    <Compile Include="obj\Debug\netcoreapp3.1\WebApplication1.RazorAssemblyInfo.cs" />
-    <Compile Include="obj\Debug\netcoreapp3.1\WebApplication1.RazorTargetAssemblyInfo.cs" />
-  </ItemGroup>
 
-  <ItemGroup>
-    <Content Include="bin\Debug\netcoreapp3.1\appsettings.Development.json" />
-    <Content Include="bin\Debug\netcoreapp3.1\appsettings.json" />
-    <Content Include="bin\Debug\netcoreapp3.1\homework.web.deps.json" />
-    <Content Include="bin\Debug\netcoreapp3.1\homework.web.runtimeconfig.dev.json" />
-    <Content Include="bin\Debug\netcoreapp3.1\homework.web.runtimeconfig.json" />
-    <Content Include="bin\Debug\netcoreapp3.1\homework.web.StaticWebAssets.xml" />
-    <Content Include="bin\Debug\netcoreapp3.1\WebApplication1.deps.json" />
-    <Content Include="bin\Debug\netcoreapp3.1\WebApplication1.runtimeconfig.dev.json" />
-    <Content Include="bin\Debug\netcoreapp3.1\WebApplication1.runtimeconfig.json" />
-    <Content Include="bin\Debug\netcoreapp3.1\WebApplication1.StaticWebAssets.xml" />
-    <Content Include="obj\Debug\netcoreapp3.1\homework.web.csproj.FileListAbsolute.txt" />
-    <Content Include="obj\Debug\netcoreapp3.1\project.razor.vs.json" />
-    <Content Include="obj\Debug\netcoreapp3.1\staticwebassets\homework.web.StaticWebAssets.xml" />
-    <Content Include="obj\Debug\netcoreapp3.1\staticwebassets\WebApplication1.StaticWebAssets.xml" />
-    <Content Include="obj\Debug\netcoreapp3.1\WebApplication1.csproj.FileListAbsolute.txt" />
-    <Content Include="obj\homework.web.csproj.nuget.dgspec.json" />
-    <Content Include="obj\project.assets.json" />
-    <Content Include="obj\WebApplication1.csproj.nuget.dgspec.json" />
-  </ItemGroup>
+
+
 
   <ItemGroup>
     <None Include="bin\Debug\netcoreapp3.1\cs\Microsoft.CodeAnalysis.CSharp.resources.dll" />
@@ -270,6 +228,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\homework.Repository\homework.Repository.csproj" />
+    <ProjectReference Include="..\homework.Service\homework.Service.csproj" />
   </ItemGroup>
 
 </Project>

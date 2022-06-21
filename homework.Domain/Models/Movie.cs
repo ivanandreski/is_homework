@@ -15,5 +15,10 @@ namespace homework.Domain.Models
         public string Genre { get; set; }
 
         public virtual List<Screaning> Screanings { get; set; }
+
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }

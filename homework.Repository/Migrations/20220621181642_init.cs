@@ -66,7 +66,7 @@ namespace homework.Repository.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("Sqlite:Autoincrement", true),
                     RoleId = table.Column<string>(nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true)
@@ -87,7 +87,7 @@ namespace homework.Repository.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("Sqlite:Autoincrement", true),
                     UserId = table.Column<string>(nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true)
@@ -195,18 +195,17 @@ namespace homework.Repository.Migrations
                     Date = table.Column<DateTime>(nullable: false),
                     MaxTickets = table.Column<int>(nullable: false),
                     Price = table.Column<double>(nullable: false),
-                    MovieId = table.Column<string>(nullable: true),
-                    MovieId1 = table.Column<Guid>(nullable: true)
+                    MovieId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Screanings", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Screanings_Movies_MovieId1",
-                        column: x => x.MovieId1,
+                        name: "FK_Screanings_Movies_MovieId",
+                        column: x => x.MovieId,
                         principalTable: "Movies",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -214,22 +213,22 @@ namespace homework.Repository.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    UserId = table.Column<string>(nullable: true),
-                    ScreaningId = table.Column<string>(nullable: true),
-                    ScreaningId1 = table.Column<Guid>(nullable: true)
+                    UserId = table.Column<Guid>(nullable: false),
+                    ScreaningId = table.Column<Guid>(nullable: false),
+                    UserId1 = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Tickets", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Tickets_Screanings_ScreaningId1",
-                        column: x => x.ScreaningId1,
+                        name: "FK_Tickets_Screanings_ScreaningId",
+                        column: x => x.ScreaningId,
                         principalTable: "Screanings",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Tickets_AspNetUsers_UserId",
-                        column: x => x.UserId,
+                        name: "FK_Tickets_AspNetUsers_UserId1",
+                        column: x => x.UserId1,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -241,26 +240,24 @@ namespace homework.Repository.Migrations
                 {
                     Id = table.Column<Guid>(nullable: false),
                     Quantity = table.Column<int>(nullable: false),
-                    TicketId = table.Column<string>(nullable: true),
-                    TicketId1 = table.Column<Guid>(nullable: true),
-                    ShoppingCartId = table.Column<string>(nullable: true),
-                    ShoppingCartId1 = table.Column<Guid>(nullable: true)
+                    TicketId = table.Column<Guid>(nullable: false),
+                    ShoppingCartId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_OrderItems", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_OrderItems_ShoppingCarts_ShoppingCartId1",
-                        column: x => x.ShoppingCartId1,
+                        name: "FK_OrderItems_ShoppingCarts_ShoppingCartId",
+                        column: x => x.ShoppingCartId,
                         principalTable: "ShoppingCarts",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_OrderItems_Tickets_TicketId1",
-                        column: x => x.TicketId1,
+                        name: "FK_OrderItems_Tickets_TicketId",
+                        column: x => x.TicketId,
                         principalTable: "Tickets",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -272,8 +269,7 @@ namespace homework.Repository.Migrations
                 name: "RoleNameIndex",
                 table: "AspNetRoles",
                 column: "NormalizedName",
-                unique: true,
-                filter: "[NormalizedName] IS NOT NULL");
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetUserClaims_UserId",
@@ -299,23 +295,22 @@ namespace homework.Repository.Migrations
                 name: "UserNameIndex",
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
-                unique: true,
-                filter: "[NormalizedUserName] IS NOT NULL");
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_OrderItems_ShoppingCartId1",
+                name: "IX_OrderItems_ShoppingCartId",
                 table: "OrderItems",
-                column: "ShoppingCartId1");
+                column: "ShoppingCartId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OrderItems_TicketId1",
+                name: "IX_OrderItems_TicketId",
                 table: "OrderItems",
-                column: "TicketId1");
+                column: "TicketId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Screanings_MovieId1",
+                name: "IX_Screanings_MovieId",
                 table: "Screanings",
-                column: "MovieId1");
+                column: "MovieId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ShoppingCarts_UserId",
@@ -323,14 +318,14 @@ namespace homework.Repository.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tickets_ScreaningId1",
+                name: "IX_Tickets_ScreaningId",
                 table: "Tickets",
-                column: "ScreaningId1");
+                column: "ScreaningId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tickets_UserId",
+                name: "IX_Tickets_UserId1",
                 table: "Tickets",
-                column: "UserId");
+                column: "UserId1");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

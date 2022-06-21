@@ -1,33 +1,45 @@
 ﻿using homework.Domain.Models;
-using homework.Repository.Interface;
 using Microsoft.EntityFrameworkCore;
+using homework.Repository.Interface;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
+using System.Linq;
 
 namespace homework.Repository.Implementation
 {
-    public class Repository<T> : IRepository<T> where T : BaseEntity
+    public class ScreaningRepository : IScreaningRepository
     {
         private readonly ApplicationDbContext _context;
-        private DbSet<T> _entities;
+        private DbSet<Screaning> _entities;
 
-        public Repository(ApplicationDbContext context)
+        public ScreaningRepository(ApplicationDbContext context)
         {
             _context = context;
-            _entities = context.Set<T>();
-        }
-        public IEnumerable<T> GetAll()
-        {
-            return _entities.AsEnumerable();
+            _entities = context.Set<Screaning>();
         }
 
-        public T Get(Guid? id)
+        public void Delete(Screaning entity)
         {
-            return _entities.SingleOrDefault(s => s.Id == id);
+            if (entity == null)
+            {
+                throw new ArgumentNullException("entity");
+            }
+            _entities.Remove(entity);
+            _context.SaveChanges();
         }
-        public void Insert(T entity)
+
+        public Screaning Get(Guid? id)
+        {
+            return _entities.Where(s => s.Id.Equals(id)).Include(s => s.Movie).FirstOrDefault();
+        }
+
+        public List<Screaning> GetAll()
+        {
+            return _entities.Include(s => s.Movie).ToList();
+        }
+
+        public void Insert(Screaning entity)
         {
             if (entity == null)
             {
@@ -37,23 +49,13 @@ namespace homework.Repository.Implementation
             _context.SaveChanges();
         }
 
-        public void Update(T entity)
+        public void Update(Screaning entity)
         {
             if (entity == null)
             {
                 throw new ArgumentNullException("entity");
             }
             _entities.Update(entity);
-            _context.SaveChanges();
-        }
-
-        public void Delete(T entity)
-        {
-            if (entity == null)
-            {
-                throw new ArgumentNullException("entity");
-            }
-            _entities.Remove(entity);
             _context.SaveChanges();
         }
     }

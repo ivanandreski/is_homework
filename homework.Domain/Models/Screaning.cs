@@ -18,11 +18,16 @@ namespace homework.Domain.Models
         [Required]
         public double Price { get; set; }
 
-        public string MovieId { get; set; }
+        public Guid MovieId { get; set; }
 
         public Movie Movie { get; set; }
 
         public virtual List<Ticket> Tickets { get; set; }
+
+        public override string ToString()
+        {
+            return String.Format("{0} , Movie: {1}", Date.ToString(), Movie.Name);
+        }
 
     }
 }

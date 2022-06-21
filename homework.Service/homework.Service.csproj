@@ -5,8 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Interface\" />
-    <Folder Include="Implementation\" />
+    <ProjectReference Include="..\homework.Domain\homework.Domain.csproj" />
+    <ProjectReference Include="..\homework.Repository\homework.Repository.csproj" />
   </ItemGroup>
 
 </Project>

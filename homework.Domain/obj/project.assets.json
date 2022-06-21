@@ -818,11 +818,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Git\\is_homework\\is_homework\\homework.Domain\\homework.Domain.csproj",
+      "projectUniqueName": "D:\\GitHub\\is_homework\\homework.Domain\\homework.Domain.csproj",
       "projectName": "homework.Domain",
-      "projectPath": "D:\\Git\\is_homework\\is_homework\\homework.Domain\\homework.Domain.csproj",
+      "projectPath": "D:\\GitHub\\is_homework\\homework.Domain\\homework.Domain.csproj",
       "packagesPath": "C:\\Users\\Ivan\\.nuget\\packages\\",
-      "outputPath": "D:\\Git\\is_homework\\is_homework\\homework.Domain\\obj\\",
+      "outputPath": "D:\\GitHub\\is_homework\\homework.Domain\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Ivan\\AppData\\Roaming\\NuGet\\NuGet.Config",
