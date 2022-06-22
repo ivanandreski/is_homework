@@ -7,17 +7,21 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using homework.Domain.Models;
 using homework.Repository;
+using homework.Service.Interface;
 
 namespace homework.web.Controllers
 {
     public class MovieController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IMovieService _movieService;
 
-        public MovieController(ApplicationDbContext context)
+        public MovieController(ApplicationDbContext context, IMovieService movieService)
         {
             _context = context;
+            _movieService = movieService;
         }
+
 
         // GET: Movie
         public async Task<IActionResult> Index()
@@ -26,15 +30,14 @@ namespace homework.web.Controllers
         }
 
         // GET: Movie/Details/5
-        public async Task<IActionResult> Details(Guid? id)
+        public IActionResult Details(Guid? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var movie = await _context.Movies
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var movie = _movieService.FindById(id);
             if (movie == null)
             {
                 return NotFound();
@@ -54,31 +57,27 @@ namespace homework.web.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,Genre,Id")] Movie movie)
+        public IActionResult Create([Bind("Name,Genre,Id")] Movie movie)
         {
             if (ModelState.IsValid)
             {
-                movie.Id = Guid.NewGuid();
-                _context.Add(movie);
-                await _context.SaveChangesAsync();
+                _movieService.Create(movie);
+
                 return RedirectToAction(nameof(Index));
             }
             return View(movie);
         }
 
         // GET: Movie/Edit/5
-        public async Task<IActionResult> Edit(Guid? id)
+        public IActionResult Edit(Guid? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var movie = await _context.Movies.FindAsync(id);
-            if (movie == null)
-            {
-                return NotFound();
-            }
+            var movie = _movieService.FindById(id);
+
             return View(movie);
         }
 
@@ -87,7 +86,7 @@ namespace homework.web.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Name,Genre,Id")] Movie movie)
+        public IActionResult Edit(Guid id, [Bind("Name,Genre,Id")] Movie movie)
         {
             if (id != movie.Id)
             {
@@ -96,37 +95,22 @@ namespace homework.web.Controllers
 
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(movie);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!MovieExists(movie.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                _movieService.Update(movie);
+
                 return RedirectToAction(nameof(Index));
             }
             return View(movie);
         }
 
         // GET: Movie/Delete/5
-        public async Task<IActionResult> Delete(Guid? id)
+        public IActionResult Delete(Guid? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var movie = await _context.Movies
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var movie = _movieService.FindById(id);
             if (movie == null)
             {
                 return NotFound();
@@ -138,17 +122,11 @@ namespace homework.web.Controllers
         // POST: Movie/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(Guid id)
+        public IActionResult DeleteConfirmed(Guid id)
         {
-            var movie = await _context.Movies.FindAsync(id);
-            _context.Movies.Remove(movie);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
+            _movieService.Delete(id);
 
-        private bool MovieExists(Guid id)
-        {
-            return _context.Movies.Any(e => e.Id == id);
+            return RedirectToAction(nameof(Index));
         }
     }
 }

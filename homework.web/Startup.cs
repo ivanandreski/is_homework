@@ -43,9 +43,14 @@ namespace homework.web
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
             services.AddTransient<IScreaningRepository, Repository.Implementation.ScreaningRepository>();
+            services.AddTransient<ITicketRepository, Repository.Implementation.TicketRepository>();
+            services.AddTransient<IUserRepository, Repository.Implementation.UserRepository>();
+            services.AddTransient<IShoppingCartRepository, Repository.Implementation.ShoppingCartRepository>();
 
             services.AddTransient<IScreaningService, Service.Implementation.ScreaningService>();
-
+            services.AddTransient<IMovieService, Service.Implementation.MovieService>();
+            services.AddTransient<ITicketService, Service.Implementation.TicketService>();
+            services.AddTransient<IShoppingCartService, Service.Implementation.ShoppingCartService>();
 
         }
 
