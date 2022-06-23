@@ -6292,6 +6292,7 @@
       "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore >= 3.1.12",
       "Microsoft.AspNetCore.Identity.EntityFrameworkCore >= 3.1.12",
       "Microsoft.EntityFrameworkCore >= 3.1.12",
+      "Microsoft.EntityFrameworkCore.Abstractions >= 3.1.12",
       "Microsoft.EntityFrameworkCore.SqlServer >= 3.1.12",
       "Microsoft.EntityFrameworkCore.Sqlite >= 3.1.12",
       "Microsoft.EntityFrameworkCore.Tools >= 3.1.12",
@@ -6350,6 +6351,10 @@
             "version": "[3.1.12, )"
           },
           "Microsoft.EntityFrameworkCore": {
+            "target": "Package",
+            "version": "[3.1.12, )"
+          },
+          "Microsoft.EntityFrameworkCore.Abstractions": {
             "target": "Package",
             "version": "[3.1.12, )"
           },

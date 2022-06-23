@@ -26,6 +26,13 @@ namespace homework.web.Controllers
         public IActionResult Index()
         {
             var screanings = _screaningService.FindAll();
+            List<int> availableTickets = new List<int>();
+            foreach(var screaning in screanings)
+            {
+                int num = _screaningService.FindAvailableTicketsForScreaning(screaning.Id);
+                availableTickets.Add(num);
+            }
+            ViewData["AvailableTickets"] = availableTickets;
 
             return View(screanings);
         }

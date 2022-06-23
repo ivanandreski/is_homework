@@ -11,5 +11,7 @@ namespace homework.Domain.Models
         public string LastName { get; set; }
 
         public virtual List<ShoppingCart> ShoppingCarts { get; set; }
+
+        public virtual List<Ticket> Tickets { get; set; }
     }
 }

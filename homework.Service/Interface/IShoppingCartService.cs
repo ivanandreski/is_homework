@@ -17,6 +17,10 @@ namespace homework.Service.Interface
 
         void AddTicketsToCart(List<Ticket> tickets, string userId);
 
+        void AddScreaning(Guid screaningId, string userName);
+
+        void ChangeNumOfTickets(Guid screaningId, Guid orderItemId, string userId);
+
         void CloseCart(string userId);
     }
 }

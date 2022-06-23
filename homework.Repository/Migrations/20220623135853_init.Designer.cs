@@ -9,7 +9,7 @@ using homework.Repository;
 namespace homework.Repository.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220621181642_init")]
+    [Migration("20220623135853_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -175,20 +175,20 @@ namespace homework.Repository.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("Quantity")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("MovieName")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("ScreaningId")
+                        .HasColumnType("TEXT");
 
                     b.Property<Guid>("ShoppingCartId")
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid>("TicketId")
-                        .HasColumnType("TEXT");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("ShoppingCartId");
+                    b.HasIndex("ScreaningId");
 
-                    b.HasIndex("TicketId");
+                    b.HasIndex("ShoppingCartId");
 
                     b.ToTable("OrderItems");
                 });
@@ -246,20 +246,22 @@ namespace homework.Repository.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
+                    b.Property<Guid>("OrderItemId")
+                        .HasColumnType("TEXT");
+
                     b.Property<Guid>("ScreaningId")
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("UserId1")
+                    b.Property<string>("UserId")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("OrderItemId");
+
                     b.HasIndex("ScreaningId");
 
-                    b.HasIndex("UserId1");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Tickets");
                 });
@@ -387,15 +389,15 @@ namespace homework.Repository.Migrations
 
             modelBuilder.Entity("homework.Domain.Models.OrderItem", b =>
                 {
-                    b.HasOne("homework.Domain.Models.ShoppingCart", "ShoppingCart")
+                    b.HasOne("homework.Domain.Models.Screaning", "Screaning")
                         .WithMany("OrderItems")
-                        .HasForeignKey("ShoppingCartId")
+                        .HasForeignKey("ScreaningId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("homework.Domain.Models.Ticket", "Ticket")
-                        .WithMany()
-                        .HasForeignKey("TicketId")
+                    b.HasOne("homework.Domain.Models.ShoppingCart", "ShoppingCart")
+                        .WithMany("OrderItems")
+                        .HasForeignKey("ShoppingCartId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -418,6 +420,12 @@ namespace homework.Repository.Migrations
 
             modelBuilder.Entity("homework.Domain.Models.Ticket", b =>
                 {
+                    b.HasOne("homework.Domain.Models.OrderItem", "OrderItem")
+                        .WithMany("Tickets")
+                        .HasForeignKey("OrderItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("homework.Domain.Models.Screaning", "Screaning")
                         .WithMany("Tickets")
                         .HasForeignKey("ScreaningId")
@@ -425,8 +433,8 @@ namespace homework.Repository.Migrations
                         .IsRequired();
 
                     b.HasOne("homework.Domain.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId1");
+                        .WithMany("Tickets")
+                        .HasForeignKey("UserId");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,0 +1,40 @@
+﻿@using homework.Domain.Models
+@{
+    ViewData["Title"] = "Shopping Cart";
+    var cart = ViewData["ShoppingCart"] as ShoppingCart;
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Movie</th>
+            <th scope="col">Date</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Price</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            int i = 1;
+            foreach (var item in cart.OrderItems)
+            {
+
+                var price = item.Screaning.Price * item.Tickets.Count();
+
+
+                <tr>
+                    <td>@i</td>
+                    <td>@item.MovieName</td>
+                    <td>@item.Screaning.Date.ToString("dd/MM/yyyy")</td>
+                    <td>@item.Tickets.Count()</td>
+                    <td>@price</td>
+                </tr>
+
+                {
+                    i++;
+                }
+            }
+        }
+    </tbody>
+</table>

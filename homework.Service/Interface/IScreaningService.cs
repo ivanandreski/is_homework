@@ -9,6 +9,8 @@ namespace homework.Service.Interface
     {
         List<Screaning> FindAll();
         Screaning FindById(Guid? id);
+
+        int FindAvailableTicketsForScreaning(Guid id);
         void Create(Screaning screaning);
         void Update(Screaning screaning);
         void Delete(Guid id);

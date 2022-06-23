@@ -24,6 +24,8 @@ namespace homework.Domain.Models
 
         public virtual List<Ticket> Tickets { get; set; }
 
+        public virtual List<OrderItem> OrderItems { get; set; }
+
         public override string ToString()
         {
             return String.Format("{0} , Movie: {1}", Date.ToString(), Movie.Name);

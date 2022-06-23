@@ -12,11 +12,15 @@ namespace homework.Service.Implementation
     {
         private readonly IScreaningRepository _screaningRepository;
         private readonly IRepository<Movie> _movieRepository;
+        private readonly IOrderItemRepository _orderItemRepository;
+        private readonly ITicketRepository ticketRepository;
 
-        public ScreaningService(IScreaningRepository screaningRepository, IRepository<Movie> movieRepository)
+        public ScreaningService(IScreaningRepository screaningRepository, IRepository<Movie> movieRepository, IOrderItemRepository orderItemRepository, ITicketRepository ticketRepository)
         {
             _screaningRepository = screaningRepository;
             _movieRepository = movieRepository;
+            _orderItemRepository = orderItemRepository;
+            this.ticketRepository = ticketRepository;
         }
 
         public void Create(Screaning screaning)
@@ -37,6 +41,16 @@ namespace homework.Service.Implementation
         public List<Screaning> FindAll()
         {
             return _screaningRepository.GetAll().ToList();
+        }
+
+        public int FindAvailableTicketsForScreaning(Guid id)
+        {
+            var screaning = this.FindById(id);
+            int ticketsSold = ticketRepository.GetAll()
+                .Where(t => t.ScreaningId.Equals(id))
+                .Count();
+
+            return screaning.MaxTickets - ticketsSold;
         }
 
         public Screaning FindById(Guid? id)

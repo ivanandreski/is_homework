@@ -35,7 +35,7 @@ namespace homework.web
             //options.UseSqlServer(
             //    Configuration.GetConnectionString("DefaultConnection")));
                 options.UseSqlite(@"DataSource=mydatabase.db;"));
-            services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
+            services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
             services.AddRazorPages();
@@ -46,6 +46,7 @@ namespace homework.web
             services.AddTransient<ITicketRepository, Repository.Implementation.TicketRepository>();
             services.AddTransient<IUserRepository, Repository.Implementation.UserRepository>();
             services.AddTransient<IShoppingCartRepository, Repository.Implementation.ShoppingCartRepository>();
+            services.AddTransient<IOrderItemRepository, Repository.Implementation.OrderItemRepository>();
 
             services.AddTransient<IScreaningService, Service.Implementation.ScreaningService>();
             services.AddTransient<IMovieService, Service.Implementation.MovieService>();

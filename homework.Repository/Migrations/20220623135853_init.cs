@@ -209,17 +209,49 @@ namespace homework.Repository.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "OrderItems",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    MovieName = table.Column<string>(nullable: true),
+                    ScreaningId = table.Column<Guid>(nullable: false),
+                    ShoppingCartId = table.Column<Guid>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OrderItems", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_OrderItems_Screanings_ScreaningId",
+                        column: x => x.ScreaningId,
+                        principalTable: "Screanings",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_OrderItems_ShoppingCarts_ShoppingCartId",
+                        column: x => x.ShoppingCartId,
+                        principalTable: "ShoppingCarts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Tickets",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    UserId = table.Column<Guid>(nullable: false),
+                    UserId = table.Column<string>(nullable: true),
                     ScreaningId = table.Column<Guid>(nullable: false),
-                    UserId1 = table.Column<string>(nullable: true)
+                    OrderItemId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Tickets", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Tickets_OrderItems_OrderItemId",
+                        column: x => x.OrderItemId,
+                        principalTable: "OrderItems",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Tickets_Screanings_ScreaningId",
                         column: x => x.ScreaningId,
@@ -227,37 +259,11 @@ namespace homework.Repository.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Tickets_AspNetUsers_UserId1",
-                        column: x => x.UserId1,
+                        name: "FK_Tickets_AspNetUsers_UserId",
+                        column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "OrderItems",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
-                    Quantity = table.Column<int>(nullable: false),
-                    TicketId = table.Column<Guid>(nullable: false),
-                    ShoppingCartId = table.Column<Guid>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_OrderItems", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_OrderItems_ShoppingCarts_ShoppingCartId",
-                        column: x => x.ShoppingCartId,
-                        principalTable: "ShoppingCarts",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_OrderItems_Tickets_TicketId",
-                        column: x => x.TicketId,
-                        principalTable: "Tickets",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -298,14 +304,14 @@ namespace homework.Repository.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_OrderItems_ScreaningId",
+                table: "OrderItems",
+                column: "ScreaningId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_OrderItems_ShoppingCartId",
                 table: "OrderItems",
                 column: "ShoppingCartId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_OrderItems_TicketId",
-                table: "OrderItems",
-                column: "TicketId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Screanings_MovieId",
@@ -318,14 +324,19 @@ namespace homework.Repository.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Tickets_OrderItemId",
+                table: "Tickets",
+                column: "OrderItemId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Tickets_ScreaningId",
                 table: "Tickets",
                 column: "ScreaningId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tickets_UserId1",
+                name: "IX_Tickets_UserId",
                 table: "Tickets",
-                column: "UserId1");
+                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -346,25 +357,25 @@ namespace homework.Repository.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "OrderItems");
+                name: "Tickets");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "ShoppingCarts");
-
-            migrationBuilder.DropTable(
-                name: "Tickets");
+                name: "OrderItems");
 
             migrationBuilder.DropTable(
                 name: "Screanings");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "ShoppingCarts");
 
             migrationBuilder.DropTable(
                 name: "Movies");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
         }
     }
 }

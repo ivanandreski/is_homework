@@ -31,12 +31,19 @@ namespace homework.Repository.Implementation
 
         public Ticket Get(Guid? id)
         {
-            return _entities.Where(s => s.Id.Equals(id)).Include(s => s.Screaning).Include(s => s.User).FirstOrDefault();
+            return _entities.Where(s => s.Id.Equals(id))
+                .Include(s => s.Screaning)
+                .Include(s => s.User)
+                .Include(s => s.OrderItem)
+                .FirstOrDefault();
         }
 
         public List<Ticket> GetAll()
         {
-            return _entities.Include(s => s.Screaning).Include(s => s.User).ToList();
+            return _entities.Include(s => s.Screaning)
+                .Include(s => s.User)
+                .Include(s => s.OrderItem)
+                .ToList();
         }
 
         public void Insert(Ticket entity)

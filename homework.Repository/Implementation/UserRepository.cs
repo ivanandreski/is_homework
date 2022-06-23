@@ -24,13 +24,10 @@ namespace homework.Repository.Implementation
             return entities.AsEnumerable();
         }
 
-        public User Get(string id)
+        public User Get(string userName)
         {
             return entities
-               .Include(z => z.Id)
-               .Include("UserCart.ProductInShoppingCarts")
-               .Include("UserCart.ProductInShoppingCarts.CurrnetProduct")
-               .SingleOrDefault(s => s.Id == id);
+               .SingleOrDefault(s => s.UserName == userName);
         }
         public void Insert(User entity)
         {
