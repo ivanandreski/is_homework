@@ -1,0 +1,64 @@
+﻿@{
+    ViewData["Title"] = "Admin";
+    string userError = ViewData["userError"] as string;
+    string fileError = ViewData["fileError"] as string;
+}
+
+<div class="row">
+    <div class="col-md-6" style="min-height: 322px !important">
+        <div class="card" style="height: 100% !important">
+            <form action="/Admin/AddToRole" method="POST" class=" p-5">
+                <div class="form-group">
+                    <label for="userName">User Name:</label>
+                    <input type="text" class="form-control" name="userName" />
+
+                    @{
+                        if (userError != null)
+                        {
+                            <div class="text-danger">
+                                @userError
+                            </div>
+                        }
+                    }
+                </div>
+                <div class="form-group">
+                    <label for="role">Role:</label>
+                    <select class="form-control" name="role">
+                        <option value="user">User</option>
+                        <option value="admin">Admin</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="col-md-6" style="min-height: 322px !important">
+        <div class="card" style="height: 100% !important">
+            <form class=" p-5">
+                <div class="form-group">
+                    <label for="userTable">User file</label>
+                    <input class="form-control" type="file" name="userTable" />
+                    @{
+                        if (fileError != null)
+                        {
+                            <div class="text-danger">
+                                @fileError
+                            </div>
+                        }
+                    }
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-success">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+    </div>
+</div>

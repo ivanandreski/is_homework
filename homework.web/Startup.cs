@@ -36,6 +36,7 @@ namespace homework.web
             //    Configuration.GetConnectionString("DefaultConnection")));
                 options.UseSqlite(@"DataSource=mydatabase.db;"));
             services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = false)
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
             services.AddRazorPages();
