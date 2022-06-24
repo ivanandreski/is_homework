@@ -8,6 +8,8 @@ namespace homework.Service.Interface
     public interface IScreaningService
     {
         List<Screaning> FindAll();
+
+        List<Screaning> FindAllFiltered(DateTime date);
         Screaning FindById(Guid? id);
 
         int FindAvailableTicketsForScreaning(Guid id);

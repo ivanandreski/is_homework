@@ -36,5 +36,55 @@ namespace homework.web.Controllers
 
             return Redirect("/ShoppingCart");
         }
+
+        [HttpPost]
+        public IActionResult ChangeQuantity(Guid orderItemId, int quantity)
+        {
+            if (orderItemId == null) return NotFound();
+
+            _shoppingCartService.ChangeNumOfTickets(orderItemId, quantity);
+
+            return Redirect("/ShoppingCart");
+
+        }
+
+        [HttpPost]
+        public IActionResult RemoveOrderItem(Guid orderItemId)
+        {
+            if (orderItemId == null)
+            {
+                return NotFound();
+            }
+
+            _shoppingCartService.RemoveOrderItem(orderItemId);
+
+            return Redirect("/ShoppingCart");
+        }
+
+        [HttpPost]
+        public IActionResult Purchase(Guid cartId)
+        {
+            if(cartId == null)
+            {
+                return NotFound();
+            }
+
+            _shoppingCartService.CloseCart(cartId);
+
+            return Redirect("/ShoppingCart");
+        }
+
+        [HttpPost]
+        public IActionResult ClearCart(Guid cartId)
+        {
+            if (cartId == null)
+            {
+                return NotFound();
+            }
+
+            _shoppingCartService.ClearCart(cartId);
+
+            return Redirect("/ShoppingCart");
+        }
     }
 }

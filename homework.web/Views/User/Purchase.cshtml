@@ -1,0 +1,61 @@
+﻿@using homework.Domain.Dto
+@model homework.Domain.Models.ShoppingCart
+
+@{
+    ViewData["Title"] = "Purchase";
+    List<PurchaseItemViewModel> items = ViewData["items"] as List<PurchaseItemViewModel>;
+}
+
+<div>
+    <h4>ShoppingCart</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-md-2">
+            @Html.DisplayNameFor(model => model.TimeOfPurchase)
+        </dt>
+        <dd class="col-md-10">
+            @Html.DisplayFor(model => model.TimeOfPurchase)
+        </dd>
+        <dt class="col-md-2">
+            Price
+        </dt>
+        <dd class="col-md-10">
+            @ViewData["Price"].ToString()
+        </dd>
+    </dl>
+    <hr />
+    <h4>Purchased Items</h4>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Movie</th>
+                <th>Screaning time</th>
+                <th>Quantity</th>
+                <th>Individual Price</th>
+                <th>Total Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                int i = 1;
+
+                foreach (var item in items)
+                {
+                    <tr>
+                        <td>@i</td>
+                        <td>@item.Movie</td>
+                        <td>@item.ScreaningTime</td>
+                        <td>@item.Quantity</td>
+                        <td>@item.Price</td>
+                        <td>@item.TotalPrice()</td>
+                    </tr>
+
+                    {
+                        i++;
+                    }
+                }
+            }
+        </tbody>
+    </table>
+</div>

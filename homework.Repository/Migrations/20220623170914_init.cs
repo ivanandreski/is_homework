@@ -214,6 +214,7 @@ namespace homework.Repository.Migrations
                 {
                     Id = table.Column<Guid>(nullable: false),
                     MovieName = table.Column<string>(nullable: true),
+                    Quantity = table.Column<int>(nullable: false),
                     ScreaningId = table.Column<Guid>(nullable: false),
                     ShoppingCartId = table.Column<Guid>(nullable: false)
                 },

@@ -9,7 +9,7 @@ using homework.Repository;
 namespace homework.Repository.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220623135853_init")]
+    [Migration("20220623170914_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -177,6 +177,9 @@ namespace homework.Repository.Migrations
 
                     b.Property<string>("MovieName")
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("INTEGER");
 
                     b.Property<Guid>("ScreaningId")
                         .HasColumnType("TEXT");

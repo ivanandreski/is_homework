@@ -43,6 +43,13 @@ namespace homework.Service.Implementation
             return _screaningRepository.GetAll().ToList();
         }
 
+        public List<Screaning> FindAllFiltered(DateTime date)
+        {
+            return _screaningRepository.GetAll()
+                .Where(s => s.Date.Date == date.Date)
+                .ToList();
+        }
+
         public int FindAvailableTicketsForScreaning(Guid id)
         {
             var screaning = this.FindById(id);

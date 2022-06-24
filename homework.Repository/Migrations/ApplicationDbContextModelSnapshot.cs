@@ -176,6 +176,9 @@ namespace homework.Repository.Migrations
                     b.Property<string>("MovieName")
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("Quantity")
+                        .HasColumnType("INTEGER");
+
                     b.Property<Guid>("ScreaningId")
                         .HasColumnType("TEXT");
 

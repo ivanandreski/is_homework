@@ -31,7 +31,9 @@ namespace homework.Repository.Implementation
 
         public ShoppingCart FindById(Guid id)
         {
-            return _entities.Include(s => s.OrderItems).FirstOrDefault(s => s.Id.Equals(id));
+            return _entities.Include(s => s.OrderItems)
+                .Include(s => s.User)
+                .FirstOrDefault(s => s.Id.Equals(id));
         }
 
         public ShoppingCart FindLatestFromUser(User user)

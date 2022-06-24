@@ -11,6 +11,27 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form method="GET" action="/Screaning" class="row">
+            <div class="col-md-10">
+                <input type="date" name="date" class="form-control" />
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary ml-1">Filter</button>
+            </div>
+        </form>
+    </div>
+    <div class="col-md-4">
+        <form method="GET" action="/Screaning" class="row">
+            <div class="col-md-12">
+                <button type="submit" class="btn btn-secondary ml-1">Clear Filter</button>
+            </div>
+        </form>
+    </div>
+</div>
+<hr />
 <table class="table">
     <thead>
         <tr>
@@ -34,34 +55,34 @@
     </thead>
     <tbody>
 
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Date)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MaxTickets)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Movie.Name)
-            </td>
-            <td>
-                @availableTickets[i++]
-            </td>
-            <td>
-                <form action="/ShoppingCart/AddToCart" method="POST" style="display: inline-block">
-                    <input hidden name="id" value=@item.Id />
-                    <button type="submit" class="btn btn-success">Add to cart</button>
-                </form>
-                @*@Html.ActionLink("AddToCart","AddToCart","ShoppingCart", null, new  { id = @item.Id }) |*@
-                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Edit</a>
-                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-secondary">Details</a>
-                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MaxTickets)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Movie.Name)
+                </td>
+                <td>
+                    @availableTickets[i++]
+                </td>
+                <td>
+                    <form action="/ShoppingCart/AddToCart" method="POST" style="display: inline-block">
+                        <input hidden name="id" value=@item.Id />
+                        <button type="submit" class="btn btn-success">Add to cart</button>
+                    </form>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Edit</a>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-secondary">Details</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

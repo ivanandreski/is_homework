@@ -1,4 +1,5 @@
-﻿using homework.Domain.Models;
+﻿using homework.Domain.Dto;
+using homework.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -13,14 +14,22 @@ namespace homework.Service.Interface
 
         ShoppingCart FindLatestFromUser(string userId);
 
+        List<OrderItem> FindAllFromPurchase(Guid cartId);
+
         void Create(string userId);
 
         void AddTicketsToCart(List<Ticket> tickets, string userId);
 
         void AddScreaning(Guid screaningId, string userName);
 
-        void ChangeNumOfTickets(Guid screaningId, Guid orderItemId, string userId);
+        void ChangeNumOfTickets(Guid orderItemId, int quantity);
 
-        void CloseCart(string userId);
+        void CloseCart(Guid cartId);
+
+        void ClearCart(Guid cartId);
+
+        void RemoveOrderItem(Guid orderItemId);
+
+        PurchaseItemViewModel GetPurchaseItemViewModel(OrderItem item);
     }
 }

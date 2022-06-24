@@ -1,0 +1,47 @@
+﻿@using homework.Domain.Models
+@{
+    List<ShoppingCart> purchases = ViewData["Purchases"] as List<ShoppingCart>;
+    List<int> prices = ViewData["Prices"] as List<int>;
+    ViewData["Title"] = "Purchases";
+}
+
+<div class="row">
+    <div class="col-md-8">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Time of purchase</th>
+                    <th>Price</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    int i = 0;
+
+                    foreach (var p in purchases)
+                    {
+                        var num = i + 1;
+                        var moreDetails = string.Format("/User/Purchase?cartId={0}&price={1}", p.Id, prices[i]);
+
+                        <tr>
+                            <td>@num</td>
+                            <td>@p.TimeOfPurchase</td>
+                            <td>@prices[i++]</td>
+                            <td>
+                                <a href=@moreDetails class="btn btn-primary">
+                                    More Details
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+
+    </div>
+    <div class="col-md-4">
+        <a href="/Identity/Account/Manage" class="w-100 btn btn-primary">Manage Account</a>
+    </div>
+</div>

@@ -9,6 +9,8 @@ namespace homework.Domain.Models
     {
         public string MovieName { get; set; }
 
+        public int Quantity { get; set; }
+
         public Guid ScreaningId { get; set; }
 
         public virtual Screaning Screaning { get; set; }

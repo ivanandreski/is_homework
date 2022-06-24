@@ -20,14 +20,38 @@
             foreach (var item in cart.OrderItems)
             {
 
-                var price = item.Screaning.Price * item.Tickets.Count();
+                var price = item.Screaning.Price * item.Quantity;
 
 
                 <tr>
                     <td>@i</td>
                     <td>@item.MovieName</td>
                     <td>@item.Screaning.Date.ToString("dd/MM/yyyy")</td>
-                    <td>@item.Tickets.Count()</td>
+                    <td>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <form action="/ShoppingCart/ChangeQuantity" method="POST" class="row">
+                                    <input type="hidden" name="orderItemId" value=@item.Id />
+                                    <div class="col-md-10">
+                                        <input class="form-control" name="quantity" type="number" value=@item.Quantity />
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button type="submit" class="btn btn-primary ml-1">Save</button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col-md-2 ml-3">
+                                <form action="/ShoppingCart/RemoveOrderItem" method="POST" class="row">
+                                    <input type="hidden" name="orderItemId" value=@item.Id />
+                                    <div class="col-md-2">
+                                    <button type="submit" class="btn btn-danger ml-2">Delete</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+
+                    </td>
                     <td>@price</td>
                 </tr>
 
@@ -37,4 +61,15 @@
             }
         }
     </tbody>
+
 </table>
+<hr />
+
+<form action="/ShoppingCart/Purchase" method="POST" style="display: inline-block">
+    <input type="hidden" value=@cart.Id name="cartId" />
+    <button class="btn btn-primary">Purchase</button>
+</form>
+<form action="/ShoppingCart/ClearCart" method="POST" style="display: inline-block">
+    <input type="hidden" value=@cart.Id name="cartId" />
+    <button class="btn btn-danger">Clear Cart</button>
+</form>

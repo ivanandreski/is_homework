@@ -29,7 +29,7 @@ namespace homework.Repository.Implementation
 
         public OrderItem Get(Guid? id)
         {
-            return _entities.SingleOrDefault(s => s.Id == id);
+            return _entities.Include(o => o.Tickets).SingleOrDefault(s => s.Id == id);
         }
         public void Insert(OrderItem entity)
         {

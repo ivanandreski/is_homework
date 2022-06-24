@@ -23,9 +23,14 @@ namespace homework.web.Controllers
         }
 
         // GET: Screaning
-        public IActionResult Index()
+        public IActionResult Index(DateTime date)
         {
             var screanings = _screaningService.FindAll();
+            if (date.Year != 1)
+            {
+                screanings = _screaningService.FindAllFiltered(date);
+            }
+            
             List<int> availableTickets = new List<int>();
             foreach(var screaning in screanings)
             {
