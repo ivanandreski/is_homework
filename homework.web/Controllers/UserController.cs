@@ -1,10 +1,17 @@
-﻿using homework.Domain.Dto;
+﻿using GemBox.Document;
+using GemBox.Pdf;
+using homework.Domain.Dto;
+using homework.Domain.Models;
 using homework.Repository.Interface;
 using homework.Service.Interface;
+using homework.web.ExportModel;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Text;
 
 namespace homework.web.Controllers
 {
@@ -13,16 +20,26 @@ namespace homework.web.Controllers
     {
         private readonly IShoppingCartService _shoppingCartService;
         private readonly IOrderItemRepository _orderItemRepository;
+        private readonly IWebHostEnvironment environment;
+        private readonly IUserRepository _userRepository;
+        private readonly ITicketService _ticketService;
 
-        public UserController(IShoppingCartService shoppingCartService, IOrderItemRepository orderItemRepository)
+        public UserController(ITicketService ticketService, IShoppingCartService shoppingCartService, IOrderItemRepository orderItemRepository, IWebHostEnvironment environment, IUserRepository userRepository)
         {
             _shoppingCartService = shoppingCartService;
             _orderItemRepository = orderItemRepository;
+            this.environment = environment;
+            _userRepository = userRepository;
+            _ticketService = ticketService;
+
+            GemBox.Document.ComponentInfo.SetLicense("FREE-LIMITED-KEY");
+            GemBox.Pdf.ComponentInfo.SetLicense("FREE-LIMITED-KEY");
         }
 
         [HttpGet]
         public IActionResult Purchases()
         {
+            var user = _userRepository.Get(User.Identity.Name);
             var purchases = _shoppingCartService.FindAllFromUser(User.Identity.Name);
             ViewData["Purchases"] = purchases;
             List<int> prices = new List<int>();
@@ -38,6 +55,8 @@ namespace homework.web.Controllers
             }
             ViewData["Prices"] = prices;
 
+            ViewData["Tickets"] = _ticketService.GetAllValidFromUser(user.Id);
+
             return View();
         }
 
@@ -51,6 +70,80 @@ namespace homework.web.Controllers
             ViewData["Price"] = price.ToString();
 
             return View(cart);
+        }
+
+        // Testing export to pdf
+        [HttpPost]
+        public FileStreamResult ExportPurchase(Guid purchaseId, List<Guid> items)
+        {
+            // Find data
+            var purchase = _shoppingCartService.GetPurchaseViewModel(purchaseId, items);
+            var model = this.ViewModelToExport(purchase);
+            var user = _userRepository.Get(User.Identity.Name);
+
+            DocumentModel document = new DocumentModel();
+
+            Section section = new Section(document);
+            document.Sections.Add(section);
+
+            Paragraph paragraph = new Paragraph(document);
+            section.Blocks.Add(paragraph);
+
+            StringBuilder str = new StringBuilder();
+            var line = string.Format("Invoice for user: {0}", user.UserName);
+            Run run = new Run(document, line);
+            paragraph.Inlines.Add(run);
+
+            paragraph = new Paragraph(document);
+            section.Blocks.Add(paragraph);
+            line = string.Format("Purchased on: {0}", model.TimeOfPurchase);
+            run = new Run(document, line);
+            paragraph.Inlines.Add(run);
+
+            paragraph = new Paragraph(document);
+            section.Blocks.Add(paragraph);
+            line = string.Format("Total price: {0}", model.Price);
+            run = new Run(document, line);
+            paragraph.Inlines.Add(run);
+
+            paragraph = new Paragraph(document);
+            section.Blocks.Add(paragraph);
+            line = "Purchased items:";
+            run = new Run(document, line);
+            paragraph.Inlines.Add(run);
+
+            foreach (var item in model.Items)
+            {
+                paragraph = new Paragraph(document);
+                section.Blocks.Add(paragraph);
+                line = string.Format("Ticket for movie: {0}, Screens at: {1}, Individual price: {2}, Quantity: {3}, Total price: {4}",
+                    item.Movie,
+                    item.ScreaningTime,
+                    item.Price,
+                    item.Quantity,
+                    item.TotalPrice());
+
+                run = new Run(document, line);
+                paragraph.Inlines.Add(run);
+            }
+
+            var fileName = "invoice" + purchaseId + DateTime.Now.Ticks.ToString() + ".pdf";
+
+            document.Save(fileName);
+
+            var path = Path.Combine(this.environment.ContentRootPath, fileName);
+            var stream = new FileStream(path, FileMode.Open);
+            return new FileStreamResult(stream, "application/pdf");
+        }
+
+        private ExportPucrhase ViewModelToExport(PurchaseViewModel vm)
+        {
+            ExportPucrhase model = new ExportPucrhase();
+            model.Price = vm.Price;
+            model.TimeOfPurchase = vm.TimeOfPurchase;
+            model.Items = vm.Items;
+
+            return model;
         }
     }
 }

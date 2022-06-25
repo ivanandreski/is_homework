@@ -181,6 +181,27 @@ namespace homework.Service.Implementation
             return model;
         }
 
+        public PurchaseViewModel GetPurchaseViewModel(Guid purchaseId, List<Guid> purchaseItemIds)
+        {
+            var cart = _shoppingCartRepository.FindById(purchaseId);
+            List<PurchaseItemViewModel> purchaseItems = purchaseItemIds
+                .Select(pid => _orderItemRepository.Get(pid))
+                .Select(p => this.GetPurchaseItemViewModel(p))
+                .ToList();
+
+            PurchaseViewModel model = new PurchaseViewModel();
+            model.TimeOfPurchase = cart.TimeOfPurchase;
+            model.Items = purchaseItems;
+            int price = 0;
+            foreach(var i in purchaseItems)
+            {
+                price += i.TotalPrice();
+            }
+            model.Price = price;
+
+            return model;
+        }
+
         public void RemoveOrderItem(Guid orderItemId)
         {
             var orderItem = _orderItemRepository.Get(orderItemId);

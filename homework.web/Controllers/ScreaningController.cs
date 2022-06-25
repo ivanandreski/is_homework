@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using homework.Domain.Models;
 using homework.Repository;
 using homework.Service.Interface;
+using Microsoft.AspNetCore.Authorization;
 
 namespace homework.web.Controllers
 {
@@ -58,6 +59,7 @@ namespace homework.web.Controllers
         }
 
         // GET: Screaning/Create
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             List<Movie> allMovies = _context.Movies.ToList();
@@ -71,6 +73,7 @@ namespace homework.web.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public IActionResult Create([Bind("Date,MaxTickets,Price,MovieId,Id")] Screaning screaning)
         {
             if (ModelState.IsValid)
@@ -83,6 +86,7 @@ namespace homework.web.Controllers
         }
 
         // GET: Screaning/Edit/5
+        [Authorize(Roles = "Admin")]
         public IActionResult Edit(Guid? id)
         {
             if (id == null)
@@ -106,6 +110,7 @@ namespace homework.web.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public IActionResult Edit(Guid id, [Bind("Date,MaxTickets,Price,MovieId,Id")] Screaning screaning)
         {
             if (id != screaning.Id)
@@ -123,6 +128,7 @@ namespace homework.web.Controllers
         }
 
         // GET: Screaning/Delete/5
+        [Authorize(Roles = "Admin")]
         public IActionResult Delete(Guid? id)
         {
             if (id == null)
@@ -142,6 +148,7 @@ namespace homework.web.Controllers
         // POST: Screaning/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public IActionResult DeleteConfirmed(Guid id)
         {
             _screaningService.Delete(id);

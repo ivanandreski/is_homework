@@ -31,5 +31,7 @@ namespace homework.Service.Interface
         void RemoveOrderItem(Guid orderItemId);
 
         PurchaseItemViewModel GetPurchaseItemViewModel(OrderItem item);
+
+        PurchaseViewModel GetPurchaseViewModel(Guid purchaseId, List<Guid> purchaseItemIds);
     }
 }

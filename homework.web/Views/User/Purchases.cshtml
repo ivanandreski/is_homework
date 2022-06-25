@@ -3,43 +3,76 @@
     List<ShoppingCart> purchases = ViewData["Purchases"] as List<ShoppingCart>;
     List<int> prices = ViewData["Prices"] as List<int>;
     ViewData["Title"] = "Purchases";
+    List<Ticket> validTickets = ViewData["Tickets"] as List<Ticket>;
 }
 
 <div class="row">
     <div class="col-md-8">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Time of purchase</th>
-                    <th>Price</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @{
-                    int i = 0;
+        <div class="row">
+            <h3>Purchases:</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Time of purchase</th>
+                        <th>Price</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        int i = 0;
 
-                    foreach (var p in purchases)
-                    {
-                        var num = i + 1;
-                        var moreDetails = string.Format("/User/Purchase?cartId={0}&price={1}", p.Id, prices[i]);
+                        foreach (var p in purchases)
+                        {
+                            var num = i + 1;
+                            var moreDetails = string.Format("/User/Purchase?cartId={0}&price={1}", p.Id, prices[i]);
 
-                        <tr>
-                            <td>@num</td>
-                            <td>@p.TimeOfPurchase</td>
-                            <td>@prices[i++]</td>
-                            <td>
-                                <a href=@moreDetails class="btn btn-primary">
-                                    More Details
-                                </a>
-                            </td>
-                        </tr>
+                            <tr>
+                                <td>@num</td>
+                                <td>@p.TimeOfPurchase</td>
+                                <td>@prices[i++]</td>
+                                <td>
+                                    <a href=@moreDetails class="btn btn-primary">
+                                        More Details
+                                    </a>
+                                </td>
+                            </tr>
+                        }
                     }
-                }
-            </tbody>
-        </table>
+                </tbody>
+            </table>
+        </div>
+        <div class="row">
+            <h3>Valid tickets:</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Movie</th>
+                        <th>Screening Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        int j = 1;
 
+                        foreach (var ticket in validTickets)
+                        {
+                            <tr>
+                                <td>@j</td>
+                                <td>@ticket.Movie</td>
+                                <td>@ticket.Screaning.Date</td>
+                            </tr>
+
+                            {
+                                j++;
+                            }
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
     </div>
     <div class="col-md-4">
         <a href="/Identity/Account/Manage" class="w-100 btn btn-primary">Manage Account</a>

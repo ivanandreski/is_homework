@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using homework.Domain.Models;
 using homework.Repository;
 using homework.Service.Interface;
+using Microsoft.AspNetCore.Authorization;
 
 namespace homework.web.Controllers
 {
@@ -47,6 +48,7 @@ namespace homework.web.Controllers
         }
 
         // GET: Movie/Create
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             return View();
@@ -57,6 +59,7 @@ namespace homework.web.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public IActionResult Create([Bind("Name,Genre,Id")] Movie movie)
         {
             if (ModelState.IsValid)
@@ -69,6 +72,7 @@ namespace homework.web.Controllers
         }
 
         // GET: Movie/Edit/5
+        [Authorize(Roles = "Admin")]
         public IActionResult Edit(Guid? id)
         {
             if (id == null)
@@ -86,6 +90,7 @@ namespace homework.web.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public IActionResult Edit(Guid id, [Bind("Name,Genre,Id")] Movie movie)
         {
             if (id != movie.Id)
@@ -103,6 +108,7 @@ namespace homework.web.Controllers
         }
 
         // GET: Movie/Delete/5
+        [Authorize(Roles = "Admin")]
         public IActionResult Delete(Guid? id)
         {
             if (id == null)
@@ -122,6 +128,7 @@ namespace homework.web.Controllers
         // POST: Movie/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public IActionResult DeleteConfirmed(Guid id)
         {
             _movieService.Delete(id);

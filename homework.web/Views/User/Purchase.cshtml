@@ -9,20 +9,40 @@
 <div>
     <h4>ShoppingCart</h4>
     <hr />
-    <dl class="row">
-        <dt class="col-md-2">
-            @Html.DisplayNameFor(model => model.TimeOfPurchase)
-        </dt>
-        <dd class="col-md-10">
-            @Html.DisplayFor(model => model.TimeOfPurchase)
-        </dd>
-        <dt class="col-md-2">
-            Price
-        </dt>
-        <dd class="col-md-10">
-            @ViewData["Price"].ToString()
-        </dd>
-    </dl>
+    <div class="row">
+        <div class="col-md-9">
+            <dl class="row">
+                <dt class="col-md-2">
+                    @Html.DisplayNameFor(model => model.TimeOfPurchase)
+                </dt>
+                <dd class="col-md-10">
+                    @Html.DisplayFor(model => model.TimeOfPurchase)
+                </dd>
+                <dt class="col-md-2">
+                    Price
+                </dt>
+                <dd class="col-md-10">
+                    @ViewData["Price"].ToString()
+                </dd>
+            </dl>
+        </div>
+        <div class="col-md-3">
+            <form action="/User/ExportPurchase" method="POST">
+                <input type="hidden" name="purchaseId" value=@Model.Id />
+                <select hidden multiple name="items">
+                    @{
+                        foreach (var item in Model.OrderItems)
+                        {
+                            <option selected value=@item.Id></option>
+                        }
+                    }
+                </select>
+
+                <button type="submit" class="btn btn-danger">Export to pdf</button>
+            </form>
+        </div>
+    </div>
+
     <hr />
     <h4>Purchased Items</h4>
     <table class="table">
