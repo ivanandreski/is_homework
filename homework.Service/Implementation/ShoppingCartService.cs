@@ -16,14 +16,16 @@ namespace homework.Service.Implementation
         private readonly ITicketRepository _ticketRepository;
         private readonly IOrderItemRepository _orderItemRepository;
         private readonly IScreaningRepository _screaningRepository;
+        private readonly IScreaningService screaningService;
 
-        public ShoppingCartService(IShoppingCartRepository shoppingCartRepository, IUserRepository userRepository, ITicketRepository ticketRepository, IOrderItemRepository orderItemRepository, IScreaningRepository screaningRepository)
+        public ShoppingCartService(IShoppingCartRepository shoppingCartRepository, IUserRepository userRepository, ITicketRepository ticketRepository, IOrderItemRepository orderItemRepository, IScreaningRepository screaningRepository, IScreaningService screaningService)
         {
             _shoppingCartRepository = shoppingCartRepository;
             _userRepository = userRepository;
             _ticketRepository = ticketRepository;
             _orderItemRepository = orderItemRepository;
             _screaningRepository = screaningRepository;
+            this.screaningService = screaningService;
         }
 
         public void AddScreaning(Guid screaningId, string userName)
@@ -47,20 +49,6 @@ namespace homework.Service.Implementation
                 orderItem.Quantity = 1;
                 _orderItemRepository.Insert(orderItem);
 
-                //var ticket = new Ticket();
-                //ticket.Id = Guid.NewGuid();
-                //ticket.UserId = user.Id;
-                //ticket.User = user;
-                //ticket.ScreaningId = screaningId;
-                //ticket.OrderItemId = orderItem.Id;
-                //ticket.OrderItem = orderItem;
-
-                //orderItem.Tickets.Add(ticket);
-
-                //_ticketRepository.Insert(ticket);
-
-                // Tickets should be added on purchase not on add to cart
-
                 cart.OrderItems.Add(orderItem);
                 _shoppingCartRepository.Update(cart);
             }
@@ -72,11 +60,16 @@ namespace homework.Service.Implementation
             throw new NotImplementedException();
         }
 
-        public void ChangeNumOfTickets(Guid orderItemId, int quantity)
+        public bool ChangeNumOfTickets(Guid orderItemId, int quantity)
         {
             var orderItem =  _orderItemRepository.Get(orderItemId);
+
+            if(screaningService.FindAvailableTicketsForScreaning(orderItem.ScreaningId) < quantity)
+                return false;
+
             orderItem.Quantity = quantity;
             _orderItemRepository.Update(orderItem);
+            return true;
         }
 
         public void ClearCart(Guid cartId)

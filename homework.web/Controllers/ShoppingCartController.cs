@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Linq;
 
 namespace homework.web.Controllers
 {
@@ -9,10 +10,12 @@ namespace homework.web.Controllers
     public class ShoppingCartController : Controller
     {
         private readonly IShoppingCartService _shoppingCartService;
+        private readonly IScreaningService screaningService;
 
-        public ShoppingCartController(IShoppingCartService shoppingCartService)
+        public ShoppingCartController(IShoppingCartService shoppingCartService, IScreaningService screaningService)
         {
             _shoppingCartService = shoppingCartService;
+            this.screaningService = screaningService;
         }
 
         [HttpGet]
@@ -20,8 +23,10 @@ namespace homework.web.Controllers
         {
             var userId = User.Identity.Name;
             var cart = _shoppingCartService.FindLatestFromUser(userId);
+            var maxTickets = cart.OrderItems.Select(i => screaningService.FindAvailableTicketsForScreaning(i.ScreaningId)).ToList();
 
             ViewData["ShoppingCart"] = cart;
+            ViewData["AvailableTickets"] = maxTickets;
 
             return View();
         }

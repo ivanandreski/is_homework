@@ -43,6 +43,8 @@ namespace homework.Repository.Implementation
             return _entities.Include(s => s.Screaning)
                 .Include(s => s.User)
                 .Include(s => s.OrderItem)
+                    .ThenInclude(o => o.Screaning)
+                        .ThenInclude(s => s.Movie)
                 .ToList();
         }
 

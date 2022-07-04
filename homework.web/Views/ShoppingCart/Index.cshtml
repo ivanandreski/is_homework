@@ -2,6 +2,7 @@
 @{
     ViewData["Title"] = "Shopping Cart";
     var cart = ViewData["ShoppingCart"] as ShoppingCart;
+    var availableTickets = ViewData["AvailableTickets"] as List<int>;
 }
 
 <table class="table">
@@ -33,7 +34,7 @@
                                 <form action="/ShoppingCart/ChangeQuantity" method="POST" class="row">
                                     <input type="hidden" name="orderItemId" value=@item.Id />
                                     <div class="col-md-10">
-                                        <input class="form-control" name="quantity" type="number" value=@item.Quantity />
+                                        <input class="form-control" name="quantity" type="number" min="1" max=@availableTickets[i-1] value=@item.Quantity />
                                     </div>
                                     <div class="col-md-2">
                                         <button type="submit" class="btn btn-primary ml-1">Save</button>

@@ -1,9 +1,12 @@
 ﻿using homework.Domain.Models;
 using homework.Repository.Interface;
+using homework.Service.Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace homework.web.Controllers
 {
@@ -12,21 +15,33 @@ namespace homework.web.Controllers
     {
         private readonly UserManager<User> _userManager;
         private readonly IUserRepository _userRepository;
+        private readonly ITicketRepository _ticketRepository;
+        private readonly IMovieService movieService;
 
-        public AdminController(UserManager<User> userManager, IUserRepository userRepository)
+        public AdminController(UserManager<User> userManager, IUserRepository userRepository, ITicketRepository ticketRepository, IMovieService movieService)
         {
             _userManager = userManager;
             _userRepository = userRepository;
+            _ticketRepository = ticketRepository;
+            this.movieService = movieService;
         }
 
         [HttpGet]
-        public IActionResult Index(string userError, string fileError)
+        public IActionResult Index(string userError, string fileError, string genre)
         {
             var user = _userRepository.Get(User.Identity.Name);
             if (!string.IsNullOrEmpty(userError))
                 ViewData["userError"] = userError;
             if (!string.IsNullOrEmpty(fileError))
                 ViewData["fileError"] = fileError;
+            if (!string.IsNullOrEmpty(genre))
+                ViewData["Tickets"] = _ticketRepository.GetAll()
+                    .Where(t => t.Screaning.Movie.Genre.Equals(genre))
+                    .ToList();
+            else
+                ViewData["Tickets"] = _ticketRepository.GetAll().ToList();
+
+            ViewData["Genres"] = movieService.GetAllGenres();
 
             return View();
         }
@@ -47,6 +62,15 @@ namespace homework.web.Controllers
         [HttpPost]
         public IActionResult ImportUsers()
         {
+            throw new NotImplementedException();
+        }
+
+        [HttpPost]
+        public IActionResult ExportTickets(List<Guid> ticketIds)
+        {
+            var tickets = ticketIds.Select(id => _ticketRepository.Get(id))
+                .ToList();
+
             throw new NotImplementedException();
         }
     }

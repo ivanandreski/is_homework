@@ -14,5 +14,7 @@ namespace homework.Service.Interface
         void Create(Movie entity);
         void Update(Movie entity);
         void Delete(Guid id);
+
+        List<string> GetAllGenres();
     }
 }

@@ -4,13 +4,26 @@
     ViewData["Title"] = "Index";
     List<int> availableTickets = ViewData["AvailableTickets"] as List<int>;
     int i = 0;
+
+    string GetClass(DateTime date)
+    {
+        if (date.Date >= DateTime.Today.Date) return "";
+
+        return "bg-danger";
+    }
 }
 
 <h1>Index</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+@{
+    if (User.IsInRole("Admin"))
+    {
+        <p>
+            <a asp-action="Create">Create New</a>
+        </p>
+    }
+}
+
 <hr />
 <div class="row">
     <div class="col-md-6">
@@ -57,7 +70,7 @@
 
         @foreach (var item in Model)
         {
-            <tr>
+            <tr class=@GetClass(item.Date)>
                 <td>
                     @Html.DisplayFor(modelItem => item.Date)
                 </td>
@@ -71,21 +84,26 @@
                     @Html.DisplayFor(modelItem => item.Movie.Name)
                 </td>
                 <td>
-                    @availableTickets[i++]
+                    @availableTickets[i]
                 </td>
                 <td>
-                    <form action="/ShoppingCart/AddToCart" method="POST" style="display: inline-block">
-                        <input hidden name="id" value=@item.Id />
-                        <button type="submit" class="btn btn-success">Add to cart</button>
-                    </form>
-
                     @{
+                        if (item.Date.Date >= DateTime.Today.Date && availableTickets[i] > 0)
+                        {
+                            <form action="/ShoppingCart/AddToCart" method="POST" style="display: inline-block">
+                                <input hidden name="id" value=@item.Id />
+                                <button type="submit" class="btn btn-success">Add to cart</button>
+                            </form>
+                        }
+
                         if (User.IsInRole("Admin"))
                         {
                             <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Edit</a>
                             <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-secondary">Details</a>
                             <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
                         }
+
+                        i++;
                     }
 
                 </td>

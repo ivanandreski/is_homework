@@ -43,6 +43,14 @@ namespace homework.Service.Implementation
             return _movieRepository.Get(Id);
         }
 
+        public List<string> GetAllGenres()
+        {
+            return _movieRepository.GetAll()
+                .Select(m => m.Genre)
+                .Distinct()
+                .ToList();
+        }
+
         public void Update(Movie entity)
         {
             _movieRepository.Update(entity);

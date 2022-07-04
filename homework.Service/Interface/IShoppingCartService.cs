@@ -22,7 +22,7 @@ namespace homework.Service.Interface
 
         void AddScreaning(Guid screaningId, string userName);
 
-        void ChangeNumOfTickets(Guid orderItemId, int quantity);
+        bool ChangeNumOfTickets(Guid orderItemId, int quantity);
 
         void CloseCart(Guid cartId);
 
