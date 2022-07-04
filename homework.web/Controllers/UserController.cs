@@ -74,7 +74,7 @@ namespace homework.web.Controllers
 
         // Testing export to pdf
         [HttpPost]
-        public FileStreamResult ExportPurchase(Guid purchaseId, List<Guid> items)
+        public IActionResult ExportPurchase(Guid purchaseId, List<Guid> items)
         {
             // Find data
             var purchase = _shoppingCartService.GetPurchaseViewModel(purchaseId, items);
@@ -127,13 +127,10 @@ namespace homework.web.Controllers
                 paragraph.Inlines.Add(run);
             }
 
-            var fileName = "invoice" + purchaseId + DateTime.Now.Ticks.ToString() + ".pdf";
+            var stream = new MemoryStream();
+            document.Save(stream, new GemBox.Document.PdfSaveOptions());
 
-            document.Save(fileName);
-
-            var path = Path.Combine(this.environment.ContentRootPath, fileName);
-            var stream = new FileStream(path, FileMode.Open);
-            return new FileStreamResult(stream, "application/pdf");
+            return File(stream.ToArray(), new GemBox.Document.PdfSaveOptions().ContentType , "export.pdf");
         }
 
         private ExportPucrhase ViewModelToExport(PurchaseViewModel vm)
