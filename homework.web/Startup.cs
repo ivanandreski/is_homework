@@ -1,3 +1,4 @@
+using homework.Domain;
 using homework.Domain.Models;
 using homework.Repository;
 using homework.Repository.Implementation;
@@ -12,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Stripe;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,6 +26,7 @@ namespace homework.web
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+
 
 
             // Add compatibility switch.
@@ -58,11 +61,17 @@ namespace homework.web
             services.AddTransient<ITicketService, Service.Implementation.TicketService>();
             services.AddTransient<IShoppingCartService, Service.Implementation.ShoppingCartService>();
 
+            // Stripe
+            services.Configure<StripeSettings>(Configuration.GetSection("Stripe"));
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            // Stripe
+            StripeConfiguration.ApiKey = Configuration.GetSection("Stripe")["SecretKey"];
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

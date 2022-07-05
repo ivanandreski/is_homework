@@ -1,8 +1,12 @@
-﻿@using homework.Domain.Models
+﻿@using Microsoft.Extensions.Options
+@inject IOptions<homework.Domain.StripeSettings> Stripe
+@using homework.Domain.Models
 @{
     ViewData["Title"] = "Shopping Cart";
     var cart = ViewData["ShoppingCart"] as ShoppingCart;
     var availableTickets = ViewData["AvailableTickets"] as List<int>;
+    double totalPrice = (double)ViewData["TotalPrice"];
+    string error = ViewData["Error"] as string;
 }
 
 <table class="table">
@@ -45,7 +49,7 @@
                                 <form action="/ShoppingCart/RemoveOrderItem" method="POST" class="row">
                                     <input type="hidden" name="orderItemId" value=@item.Id />
                                     <div class="col-md-2">
-                                    <button type="submit" class="btn btn-danger ml-2">Delete</button>
+                                        <button type="submit" class="btn btn-danger ml-2">Delete</button>
                                     </div>
                                 </form>
                             </div>
@@ -66,10 +70,33 @@
 </table>
 <hr />
 
-<form action="/ShoppingCart/Purchase" method="POST" style="display: inline-block">
+@*<form action="/ShoppingCart/Purchase" method="POST" style="display: inline-block">
     <input type="hidden" value=@cart.Id name="cartId" />
     <button class="btn btn-primary">Purchase</button>
-</form>
+</form>*@
+
+@if (!string.IsNullOrEmpty(error))
+{
+    <h5 class="text-danger">@error</h5>
+}
+
+@if (totalPrice > 0)
+{
+    <form asp-controller="ShoppingCart" asp-action="PayOrder" method="post" style="display: inline-block">
+        <article>
+            <script src="https://checkout.stripe.com/checkout.js"
+                class="stripe-button"
+                data-key="@Stripe.Value.PublishableKey"
+                data-locale="auto"
+                data-description="EShop Application Payment"
+                data-amount="@(totalPrice * 100)"
+                data-label="Pay $@totalPrice">
+            </script>
+        </article>
+    </form>
+}
+
+
 <form action="/ShoppingCart/ClearCart" method="POST" style="display: inline-block">
     <input type="hidden" value=@cart.Id name="cartId" />
     <button class="btn btn-danger">Clear Cart</button>

@@ -1,6 +1,7 @@
 ﻿using homework.Service.Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Stripe;
 using System;
 using System.Linq;
 
@@ -19,14 +20,26 @@ namespace homework.web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public IActionResult Index(string error)
         {
+            if(!string.IsNullOrEmpty(error))
+                ViewData["Error"] = error;
+
             var userId = User.Identity.Name;
             var cart = _shoppingCartService.FindLatestFromUser(userId);
             var maxTickets = cart.OrderItems.Select(i => screaningService.FindAvailableTicketsForScreaning(i.ScreaningId)).ToList();
 
             ViewData["ShoppingCart"] = cart;
             ViewData["AvailableTickets"] = maxTickets;
+            double totalPrice = 0;
+
+            foreach (var item in cart.OrderItems)
+            {
+                var screaning = screaningService.FindById(item.ScreaningId);
+
+                totalPrice += screaning.Price * item.Quantity;
+            }
+            ViewData["TotalPrice"] = totalPrice;
 
             return View();
         }
@@ -66,18 +79,59 @@ namespace homework.web.Controllers
             return Redirect("/ShoppingCart");
         }
 
-        [HttpPost]
-        public IActionResult Purchase(Guid cartId)
+        public IActionResult PayOrder(string stripeEmail, string stripeToken)
         {
-            if(cartId == null)
+            var customerService = new CustomerService();
+            var chargeService = new ChargeService();
+            string userName = User.Identity.Name;
+            var cart = _shoppingCartService.FindLatestFromUser(userName);
+            double totalPrice = 0;
+
+            foreach(var item in cart.OrderItems)
             {
-                return NotFound();
+                var screaning = screaningService.FindById(item.ScreaningId);
+
+                totalPrice += screaning.Price * item.Quantity;
             }
 
-            _shoppingCartService.CloseCart(cartId);
+            var customer = customerService.Create(new CustomerCreateOptions
+            {
+                Email = stripeEmail,
+                Source = stripeToken
+            });
 
-            return Redirect("/ShoppingCart");
+            var charge = chargeService.Create(new ChargeCreateOptions
+            {
+                Amount = Convert.ToInt32(totalPrice) * 100,
+                Description = "EShop Application Payment",
+                Currency = "usd",
+                Customer = customer.Id
+            });
+
+            if (charge.Status == "succeeded")
+            {
+                _shoppingCartService.CloseCart(cart.Id);
+
+                return Redirect("/ShoppingCart");
+            }
+            else
+            {
+                return Redirect("/ShoppingCart?error=PaymentError");
+            }
         }
+
+        //[HttpPost]
+        //public IActionResult Purchase(Guid cartId)
+        //{
+        //    if(cartId == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    _shoppingCartService.CloseCart(cartId);
+
+        //    return Redirect("/ShoppingCart");
+        //}
 
         [HttpPost]
         public IActionResult ClearCart(Guid cartId)
