@@ -35,6 +35,8 @@ namespace homework.Repository.Implementation
                 .Include(s => s.Screaning)
                 .Include(s => s.User)
                 .Include(s => s.OrderItem)
+                    .ThenInclude(o => o.Screaning)
+                        .ThenInclude(s => s.Movie)
                 .FirstOrDefault();
         }
 

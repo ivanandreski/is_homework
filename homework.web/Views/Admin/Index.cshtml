@@ -45,10 +45,10 @@
             <div class="card-header">
                 <h5>Import users from xlsx file:</h5>
             </div>
-            <form class=" p-5">
+            <form enctype="multipart/form-data" action="/Admin/ImportUsers" method="post" class="form p-5">
                 <div class="form-group">
                     <label for="userTable">User file</label>
-                    <input class="form-control" type="file" name="userTable" />
+                    <input class="form-control" type="file" name="userTable" required/>
                     @{
                         if (fileError != null)
                         {
@@ -60,7 +60,7 @@
                 </div>
 
                 <div class="form-group">
-                    <button type="submit" class="btn btn-success">Submit</button>
+                    <button type="submit" class="btn btn-success">Import</button>
                 </div>
             </form>
         </div>
@@ -92,17 +92,18 @@
             </div>
             <div class="col-md-6">
                 <form action="/Admin/ExportTickets" method="POST">
-                <select hidden multiple name="ticketIds">
-                    @{
-                        foreach (var ticket in tickets)
-                        {
-                            <option selected value=@ticket.Id></option>
+                    <select hidden multiple name="ticketIds">
+                        @{
+                            foreach (var ticket in tickets)
+                            {
+                                <option selected value=@ticket.Id></option>
+                            }
                         }
-                    }
-                </select>
-
-                <button type="submit" class="btn btn-danger">Export to xlsx</button>
-            </form>
+                    </select>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-danger">Export to xlsx</button>
+                    </div>
+                </form>
             </div>
         </div>
 

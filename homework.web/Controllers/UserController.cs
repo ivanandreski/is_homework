@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace homework.web.Controllers
@@ -40,7 +41,9 @@ namespace homework.web.Controllers
         public IActionResult Purchases()
         {
             var user = _userRepository.Get(User.Identity.Name);
-            var purchases = _shoppingCartService.FindAllFromUser(User.Identity.Name);
+            var purchases = _shoppingCartService.FindAllFromUser(User.Identity.Name)
+                .OrderBy(p => p.TimeOfPurchase)
+                .ToList();
             ViewData["Purchases"] = purchases;
             List<int> prices = new List<int>();
             foreach (var purchase in purchases)

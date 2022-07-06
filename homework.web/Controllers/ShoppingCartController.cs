@@ -1,9 +1,11 @@
-﻿using homework.Service.Interface;
+﻿using homework.Domain;
+using homework.Service.Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Stripe;
 using System;
 using System.Linq;
+using System.Net.Mail;
 
 namespace homework.web.Controllers
 {
@@ -112,7 +114,15 @@ namespace homework.web.Controllers
             {
                 _shoppingCartService.CloseCart(cart.Id);
 
-                return Redirect("/ShoppingCart");
+                var mailModel = new MailModel();
+                mailModel.From = "is_homework@outlook.com";
+                mailModel.To = customer.Email;
+                mailModel.Subject = "Successsfull order!";
+                mailModel.Body = "Successfull order with id: " + cart.Id;
+
+                SendMail(mailModel);
+
+                return Redirect("/User/Purchases");
             }
             else
             {
@@ -144,6 +154,23 @@ namespace homework.web.Controllers
             _shoppingCartService.ClearCart(cartId);
 
             return Redirect("/ShoppingCart");
+        }
+
+        private void SendMail(MailModel _objModelMail)
+        {
+            MailMessage mail = new MailMessage();
+            mail.To.Add(_objModelMail.To);
+            mail.From = new MailAddress(_objModelMail.From);
+            mail.Subject = _objModelMail.Subject;
+            mail.Body = _objModelMail.Body;
+            mail.IsBodyHtml = true;
+            SmtpClient smtp = new SmtpClient();
+            smtp.Host = "smtp-mail.outlook.com";
+            smtp.Port = 587;
+            smtp.UseDefaultCredentials = false;
+            smtp.Credentials = new System.Net.NetworkCredential("is_homework@outlook.com", "ishomework1"); // Enter seders User name and password  
+            smtp.EnableSsl = true;
+            smtp.Send(mail);
         }
     }
 }
