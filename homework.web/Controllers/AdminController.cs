@@ -117,20 +117,21 @@ namespace homework.web.Controllers
                 //< td > @ticket.Screaning.Movie.Genre </ td >
                 //< td > @ticket.Screaning.Date.ToShortDateString() </ td >
 
-                var worksheet = workbook.Worksheets.Add("Users");
+                var worksheet = workbook.Worksheets.Add($"ticket_export_{DateTime.Now.ToShortDateString()}");
                 var currentRow = 1;
                 worksheet.Cell(currentRow, 1).Value = "#";
                 worksheet.Cell(currentRow, 2).Value = "User Name";
-                worksheet.Cell(currentRow, 2).Value = "Movie";
-                worksheet.Cell(currentRow, 2).Value = "Genre";
-                worksheet.Cell(currentRow, 2).Value = "Date";
+                worksheet.Cell(currentRow, 3).Value = "Movie";
+                worksheet.Cell(currentRow, 4).Value = "Genre";
+                worksheet.Cell(currentRow, 5).Value = "Date";
                 foreach (var ticket in tickets)
                 {
                     currentRow++;
-                    worksheet.Cell(currentRow, 1).Value = ticket.User.UserName;
-                    worksheet.Cell(currentRow, 2).Value = ticket.Screaning.Movie.Name;
-                    worksheet.Cell(currentRow, 3).Value = ticket.Screaning.Movie.Genre;
-                    worksheet.Cell(currentRow, 4).Value = ticket.Screaning.Date.ToShortDateString();
+                    worksheet.Cell(currentRow, 1).Value = currentRow - 1;
+                    worksheet.Cell(currentRow, 2).Value = ticket.User.UserName;
+                    worksheet.Cell(currentRow, 3).Value = ticket.Screaning.Movie.Name;
+                    worksheet.Cell(currentRow, 4).Value = ticket.Screaning.Movie.Genre;
+                    worksheet.Cell(currentRow, 5).Value = ticket.Screaning.Date.ToShortDateString();
                 }
 
                 using (var stream = new MemoryStream())
@@ -141,7 +142,7 @@ namespace homework.web.Controllers
                     return File(
                         content,
                         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                        "users.xlsx");
+                        $"ticket_export_{ DateTime.Now.ToShortDateString()}.xlsx");
                 }
             }
         }
