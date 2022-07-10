@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Git\\is_homework\\is_homework\\homework.Repository\\homework.Repository.csproj": {}
+    "D:\\GitHub\\is_homework\\homework.Repository\\homework.Repository.csproj": {}
   },
   "projects": {
-    "D:\\Git\\is_homework\\is_homework\\homework.Domain\\homework.Domain.csproj": {
+    "D:\\GitHub\\is_homework\\homework.Domain\\homework.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Git\\is_homework\\is_homework\\homework.Domain\\homework.Domain.csproj",
+        "projectUniqueName": "D:\\GitHub\\is_homework\\homework.Domain\\homework.Domain.csproj",
         "projectName": "homework.Domain",
-        "projectPath": "D:\\Git\\is_homework\\is_homework\\homework.Domain\\homework.Domain.csproj",
+        "projectPath": "D:\\GitHub\\is_homework\\homework.Domain\\homework.Domain.csproj",
         "packagesPath": "C:\\Users\\Ivan\\.nuget\\packages\\",
-        "outputPath": "D:\\Git\\is_homework\\is_homework\\homework.Domain\\obj\\",
+        "outputPath": "D:\\GitHub\\is_homework\\homework.Domain\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Ivan\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -64,14 +64,14 @@
         }
       }
     },
-    "D:\\Git\\is_homework\\is_homework\\homework.Repository\\homework.Repository.csproj": {
+    "D:\\GitHub\\is_homework\\homework.Repository\\homework.Repository.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Git\\is_homework\\is_homework\\homework.Repository\\homework.Repository.csproj",
+        "projectUniqueName": "D:\\GitHub\\is_homework\\homework.Repository\\homework.Repository.csproj",
         "projectName": "homework.Repository",
-        "projectPath": "D:\\Git\\is_homework\\is_homework\\homework.Repository\\homework.Repository.csproj",
+        "projectPath": "D:\\GitHub\\is_homework\\homework.Repository\\homework.Repository.csproj",
         "packagesPath": "C:\\Users\\Ivan\\.nuget\\packages\\",
-        "outputPath": "D:\\Git\\is_homework\\is_homework\\homework.Repository\\obj\\",
+        "outputPath": "D:\\GitHub\\is_homework\\homework.Repository\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Ivan\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -88,8 +88,8 @@
           "netcoreapp3.1": {
             "targetAlias": "netcoreapp3.1",
             "projectReferences": {
-              "D:\\Git\\is_homework\\is_homework\\homework.Domain\\homework.Domain.csproj": {
-                "projectPath": "D:\\Git\\is_homework\\is_homework\\homework.Domain\\homework.Domain.csproj"
+              "D:\\GitHub\\is_homework\\homework.Domain\\homework.Domain.csproj": {
+                "projectPath": "D:\\GitHub\\is_homework\\homework.Domain\\homework.Domain.csproj"
               }
             }
           }

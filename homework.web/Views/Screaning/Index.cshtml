@@ -29,7 +29,7 @@
     <div class="col-md-6">
         <form method="GET" action="/Screaning" class="row">
             <div class="col-md-10">
-                <input type="date" name="date" class="form-control" />
+                <input type="date" name="date" class="form-control" min=@DateTime.Today.Date />
             </div>
             <div class="col-md-2">
                 <button type="submit" class="btn btn-primary ml-1">Filter</button>

@@ -1,7 +1,19 @@
-﻿@model homework.Domain.Models.Movie
+﻿@using homework.Domain.Models
+@model homework.Domain.Models.Movie
 
 @{
     ViewData["Title"] = "Details";
+
+    List<int> availableTickets = ViewData["AvailableTickets"] as List<int>;
+    List<Screaning> screanings = ViewData["Screanings"] as List<Screaning>;
+    int i = 0;
+
+    string GetClass(DateTime date)
+    {
+        if (date.Date >= DateTime.Today.Date) return "";
+
+        return "bg-danger";
+    }
 }
 
 <h1>Details</h1>
@@ -10,21 +22,107 @@
     <h4>Movie</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Name)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Name)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Genre)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Genre)
         </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>
+
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form method="GET" action="/Screaning" class="row">
+            <div class="col-md-10">
+                <input type="date" name="date" class="form-control" />
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary ml-1">Filter</button>
+            </div>
+        </form>
+    </div>
+    <div class="col-md-4">
+        <form method="GET" action="/Screaning" class="row">
+            <div class="col-md-12">
+                <button type="submit" class="btn btn-secondary ml-1">Clear Filter</button>
+            </div>
+        </form>
+    </div>
+</div>
+<hr />
+<table class="table">
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>
+                Max Tickets
+            </th>
+            <th>
+                Price
+            </th>
+            <th>
+                Movie
+            </th>
+            <th>
+                Available Tickets
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var item in screanings)
+        {
+            <tr class=@GetClass(item.Date)>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MaxTickets)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Movie.Name)
+                </td>
+                <td>
+                    @availableTickets[i]
+                </td>
+                <td>
+                    @{
+                        if (item.Date.Date >= DateTime.Today.Date && availableTickets[i] > 0)
+                        {
+                            <form action="/ShoppingCart/AddToCart" method="POST" style="display: inline-block">
+                                <input hidden name="id" value=@item.Id />
+                                <button type="submit" class="btn btn-success">Add to cart</button>
+                            </form>
+                        }
+
+                        if (User.IsInRole("Admin"))
+                        {
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Edit</a>
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-secondary">Details</a>
+                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
+                        }
+
+                        i++;
+                    }
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

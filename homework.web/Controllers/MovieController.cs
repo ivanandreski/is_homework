@@ -16,13 +16,14 @@ namespace homework.web.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly IMovieService _movieService;
+        private readonly IScreaningService _screaningService;
 
-        public MovieController(ApplicationDbContext context, IMovieService movieService)
+        public MovieController(ApplicationDbContext context, IMovieService movieService, IScreaningService screaningService)
         {
             _context = context;
             _movieService = movieService;
+            _screaningService = screaningService;
         }
-
 
         // GET: Movie
         public async Task<IActionResult> Index()
@@ -43,6 +44,16 @@ namespace homework.web.Controllers
             {
                 return NotFound();
             }
+
+            var screanings = _screaningService.FindAll().Where(s => s.MovieId.Equals(id)).Where(s => s.Date >= DateTime.Today).ToList();
+            List<int> availableTickets = new List<int>();
+            foreach (var screaning in screanings)
+            {
+                int num = _screaningService.FindAvailableTicketsForScreaning(screaning.Id);
+                availableTickets.Add(num);
+            }
+            ViewData["AvailableTickets"] = availableTickets;
+            ViewData["Screanings"] = screanings;
 
             return View(movie);
         }
